@@ -11,7 +11,7 @@ class ProductController extends Controller
 {
        public function index(): JsonResponse
     {
-$products = Product::with(['categories', 'diskon'])->get();
+$products = Product::with(['categories'])->get();
         return response()->json($products, 200);
     }
 
