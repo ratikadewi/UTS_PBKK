@@ -2,37 +2,37 @@
 
 namespace App\Models;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Customer extends Model
+
+class Customers extends Model
 {
     use HasUlids;
     
-    protected $table = 'customer';
+    protected $table = 'customers';
     
     protected $fillable = [
         'name',
         'email',
         'password',
         'phone',
-        'address'
+        'address',
     ];
+    
 
     protected function casts(): array
     {
         return [
-            'name' => 'string',
-            'email' => 'string',
+        'name'=> 'string',
+        'password' => 'hashed',
+        'phone' => 'string',
+        'address' => 'string',
         ];
     }
 
-
-    public function order():HasMany{
+    public function orders():HasMany{
         return $this->hasMany(Orders::class,'customer_id');
     }
 }

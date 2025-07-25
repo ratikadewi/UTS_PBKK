@@ -30,6 +30,8 @@ class OrdersItemsController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request->validate([
+            'order_id' => 'required|string',
+            'product_id' => 'required|string',
             'quantity' => 'required|integer',
             'price' => 'required|integer',
         ]);
@@ -55,14 +57,14 @@ class OrdersItemsController extends Controller
               $barang = OrdersItems::findOrFail($id);
   
               $request->validate([
-             'order_id' => 'sometimes|string',
+                'order_id' => 'sometimes|string',
                 'product_id' => 'sometimes|string',
                 'quantity' => 'sometimes|integer',
                 'price' => 'sometimes|integer',
             ]);
   
               // Hanya update field yang dikirim
-              $data = $request->only(['quantity', 'price']);
+              $data = $request->only(['order_id','product_id','quantity', 'price']);
 
               $barang->update($data);
               

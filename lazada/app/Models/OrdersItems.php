@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-
 class OrdersItems extends Model
 {
-    use HasUlids;
+     use HasUlids;
     
     protected $fillable =[
     'product_id',
@@ -18,7 +17,7 @@ class OrdersItems extends Model
     'price',
     ];
 
-    protected $table = '_order_items';
+    protected $table = 'order_item';
 
     protected function casts(): array
     {
@@ -27,11 +26,13 @@ class OrdersItems extends Model
         ];
     }
 
-    public function order():BelongsTo{
-        return $this->belongsTo(Orders::class, 'order_id');
+    public function product():BelongsTo
+    {
+        return $this->belongsTo(Product::class,'product_id');
     }
 
-    public function product():BelongsTo{
-        return $this->belongsTo(Product::class, 'product_id');
+    public function orders():BelongsTo
+    {
+        return $this->belongsTo(Orders::class,'order_id');
     }
 }

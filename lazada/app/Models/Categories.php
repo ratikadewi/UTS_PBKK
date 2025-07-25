@@ -6,16 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Categori extends Model
-{
-    use HasUlids;
-    
-    protected $fillable =[
-    'name',
-    'description',
-    ];
 
-    protected $table = 'categori';
+class Categories extends Model
+{
+ use HasUlids;
+    
+    protected $table = 'categories';
+    
+    protected $fillable = [
+        'name',
+        'description',
+    ];
 
     protected function casts(): array
     {
@@ -25,6 +26,9 @@ class Categori extends Model
     }
 
     public function product():HasMany{
-        return $this->hasMany(Categori::class,'category_id');
+        return $this->hasMany(Categories::class,'product_id');
     }
+
+
+
 }

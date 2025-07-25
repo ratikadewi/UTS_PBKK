@@ -9,11 +9,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductController extends Controller
 {
-    public function index(): JsonResponse
+       public function index(): JsonResponse
     {
-
-        $dataBarang = Product::all();
-        return response()->json($dataBarang, 200);
+$products = Product::with(['categories', 'diskon'])->get();
+        return response()->json($products, 200);
     }
 
     public function show($id): JsonResponse
@@ -30,19 +29,19 @@ class ProductController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request->validate([
+            'categories_id' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'price' => 'required|integer',
-            'stock' => 'required|integer',
-            'category_id' => 'required|string'
+            'quantity_product' => 'required|integer',
+            'price' => 'required|numeric|min:0',
         ]);
 
         $barang = Product::create([
+            'categories_id' => $request->categories_id,
             'name' => $request->name,
             'description' => $request->description,
+            'quantity_product' => $request->quantity_product,
             'price' => $request->price,
-            'stock' => $request->stock,
-            'category_id' => $request->category_id
         ]);
 
 
@@ -59,15 +58,15 @@ class ProductController extends Controller
               $barang = Product::findOrFail($id);
   
               $request->validate([
+                'categories_id' => 'sometimes|string|max:255',
                 'name' => 'sometimes|string|max:255',
                 'description' => 'sometimes|string',
-                'price' => 'sometimes|integer',
-                'stock' => 'sometimes|integer',
-                'category_id' => 'sometimes|string'
+                'quantity_product' => 'sometimes|integer',
+                'price' => 'sometimes|numeric|min:0',
             ]);
   
               // Hanya update field yang dikirim
-              $data = $request->only(['name', 'description', 'price', 'stock', 'category_id']);
+              $data = $request->only(['categories_id', 'name', 'description', 'quantity_product', 'price']);
 
               $barang->update($data);
               
@@ -94,4 +93,12 @@ class ProductController extends Controller
               return response()->json(['message' => 'Data Product tidak ditemukan.'], 404);
           }
       }
+    public function count()
+    {
+        $count = \App\Models\Product::count();
+
+        return response()->json([
+            'total' => $count
+        ]);
+    }
 }

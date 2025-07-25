@@ -58,13 +58,13 @@ class OrderController extends Controller
 
             $request->validate([
                 'customer_id' => 'sometimes|string',
-                'order_date' => 'sometimes|string|date',
-                'total_amount' => 'sometimes|integer',
-                'status' => 'sometimes|string',
+                'order_date' => 'required|string|date',
+                'total_amount' => 'required|integer',
+                'status' => 'required|string',
             ]);
 
             // Hanya update field yang dikirim
-            $data = $request->only(['customer_id','order_date', 'total_amount', 'status']);
+            $data = $request->only(['customer','order_date', 'total_amount', 'status']);
 
             $order->update($data);
 
